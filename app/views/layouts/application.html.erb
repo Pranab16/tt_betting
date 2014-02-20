@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Demo</title>
+  <%= stylesheet_link_tag "application", :media => "all" %>
+    <%= stylesheet_link_tag "bootstrap", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= javascript_include_tag "bootstrap.min" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<% if flash[:notice] %>
+    <p class="notice"><%= flash[:notice] %></p>
+<% end %>
+<% if flash[:error] %>
+    <p class="error"><%= flash[:error] %></p>
+<% end %>
+
+<% if @current_user %>
+    <div class="logout pull-right">
+        Welcome <%= @current_user.username %>
+        <%= link_to "Logout", logout_path %>
+    </div>
+
+    <div class="top_nav">
+        <% if @current_user.is_superuser %>
+            <%= link_to "Create new question", question_new_path %>
+            <%= link_to "Current questions", question_current_path %>
+            <%= link_to "Expired questions", question_expired_path %>
+        <% else %>
+            <%= link_to "Answered questions", question_answered_path %>
+            <%= link_to "Unanswered questions", question_unanswered_path %>
+            <%= link_to "Expired questions", question_expired_path %>
+        <% end %>
+    </div>
+<% end %>
+
+<%= yield %>
+
+</body>
+</html>

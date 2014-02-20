@@ -1,0 +1,27 @@
+<h1>Questions</h1>
+<script>
+    var url = "<%= question_answer_path %>";
+</script>
+<div class="questions content_wrapper">
+    <% for question in @questions %>
+        <div class="question_wrapper">
+            <h4 class="question_name">Q <%= question.id %>: <%= question.name %></h4>
+            [<%= question.score %> point(s)]
+            <% diff = question.time_to_expire - DateTime.now.utc %>
+            [Time left: <%= '%d day(s) %d hours %02d minutes' % [ diff / (24*3600), (diff % (24*3600)) / 3600, (diff / 60) % 60] %>]
+
+            <div class="choices">
+                <% for choice in question.choices %>
+                    <div class="choice_wrapper">
+                        <% checked = false %>
+                        <% if @answer_hash[question.id] == choice.id %>
+                            <% checked = true %>
+                        <% end %>
+                        <%= radio_button_tag question.id, choice.id, checked, class: "js-select_choice" %>
+                        <%= choice.name %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    <% end %>
+</div>

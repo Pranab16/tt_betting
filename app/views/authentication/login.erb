@@ -1,0 +1,16 @@
+<h2>Login page</h2>
+<div class="content_wrapper">
+    <%= form_for :user, :url => login_path do |f| %>
+        <p>
+            Username: <%= f.text_field :username %>
+        </p>
+        <p>
+            Password: <%= f.password_field :password %>
+        </p>
+        <p>
+            <%= f.submit 'Login' %>
+            <%= link_to "Signup", signup_path %>
+        </p>
+
+    <% end %>
+</div>

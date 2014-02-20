@@ -1,0 +1,33 @@
+<h1>Questions</h1>
+<script>
+    var url = "<%= question_answer_path %>";
+</script>
+
+<div class="questions content_wrapper">
+    <% for question in @questions %>
+        <div class="question_wrapper">
+            <%if @current_user.is_superuser %>
+                <% disabled = false %>
+            <% else %>
+                <% disabled = true %>
+            <% end %>
+            <h4 class="question_name">Q <%= question.id %>: <%= question.name %></h4>
+            [<%= question.score %> point(s)]
+            [Expired]
+            <% disabled = true if question.choice_id %>
+
+            <div class="choices">
+                <% for choice in question.choices %>
+                    <div class="choice_wrapper">
+                        <% checked = false %>
+                        <% if @answer_hash[question.id] == choice.id %>
+                            <% checked = true %>
+                        <% end %>
+                        <%= radio_button_tag question.id, choice.id, checked, disabled: disabled, class: "js-select_choice js-disable_question" %>
+                        <%= choice.name %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    <% end %>
+</div>

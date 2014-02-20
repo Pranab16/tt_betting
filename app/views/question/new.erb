@@ -1,0 +1,28 @@
+<h1>Create New question</h1>
+<div class="content_wrapper">
+    <%= form_for @question, :url => question_new_path(@question) do |f| %>
+        <p>
+            Question: <%= f.text_field :name %>
+        </p>
+        <div class="choices">
+            <%= f.fields_for :choices do |choice| %>
+                <p>
+                    Choice: <%= choice.text_field :name %>
+                </p>
+            <% end %>
+        </div>
+        <p>
+            <%= link_to "Add choice", '#', {:class => 'js-add_choice'} %>
+        </p>
+
+        <p>
+            Time to expire: <%= f.datetime_select :time_to_expire %>
+        </p>
+        <p>
+            Points: <%= f.text_field :score, :value => number_with_precision(f.object.score, :precision => 2) %>
+        </p>
+        <p>
+            <%= f.submit 'Create' %>
+        </p>
+    <% end %>
+</div>
