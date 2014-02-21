@@ -1,0 +1,23 @@
+<div class="questions content_wrapper">
+    <div class="question_wrapper">
+        <h4 class="question_name">Q <%= @question.id %>: <%= @question.name %></h4>
+        <p class="question_point">
+            [<%= @question.score %> point(s)]
+        </p>
+
+        <% diff = @question.time_to_expire - DateTime.now.utc %>
+
+        <p class="question_time_left">
+            [Time left: <%= '%d day(s) %d hours %02d minutes' % [ diff / (24*3600), (diff % (24*3600)) / 3600, (diff / 60) % 60] %>]
+        </p>
+
+        <div class="choices">
+            <% for choice in @question.choices %>
+                <div class="choice_wrapper">
+                    <%= radio_button_tag @question.id, choice.id, false, disabled: true, class: "js-select_choice" %>
+                    <%= choice.name %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>

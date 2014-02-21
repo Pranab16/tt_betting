@@ -103,3 +103,17 @@
     margin-bottom: 10px;
     background-color: #A3B15A;
 }
+
+.home_top_leaders {
+    width: 300px;
+    margin: 0 auto;
+}
+
+.expired_tabs {
+    display: inline-block;
+}
+
+.correct_answer {
+    margin-left: 30px;
+    font-size: 18px;
+}

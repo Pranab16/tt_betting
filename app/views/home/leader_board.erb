@@ -1,0 +1,30 @@
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>User</th>
+        <% for question in @questions %>
+            <th><%= link_to "Q #{question.id}", question_path(question) %></th>
+        <% end %>
+        <th>Total Score</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% for user in @users %>
+        <tr>
+            <td><%= user.username %></td>
+            <% for question in @questions %>
+                <% if @user_score_hash["#{user.id}_#{question.id}"] %>
+                    <td><%= @user_score_hash["#{user.id}_#{question.id}"] %></td>
+                <% else %>
+                    <td>0</td>
+                <% end %>
+            <% end %>
+            <% if @user_total_score_hash[user.id] %>
+                <td><%= @user_total_score_hash[user.id] %></td>
+            <% else %>
+                <td>0</td>
+            <% end %>
+        </tr>
+    <% end %>
+    </tbody>
+</table>

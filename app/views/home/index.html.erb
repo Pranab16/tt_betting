@@ -4,7 +4,26 @@
 
 
 <% if @current_user.is_superuser %>
-
+    <h2>Top 3 Leaders</h2>
+    <div class="home_top_leaders">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>User</th>
+            <th>Total Score</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% for user in @users_score %>
+            <tr>
+                <td><%= user.username %></td>
+                <td><%= user.user_score %></td>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+    </div>
+    <%= link_to "View complete list", leader_board_path %>
 <% else %>
     <div class="score_rank">
         <p class="score">

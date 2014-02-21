@@ -5,8 +5,11 @@ Demo::Application.routes.draw do
   get "signup" => "authentication#signup"
   post "signup" => "authentication#create_user"
 
-  root :to => "home#index"
   get "logout" => "authentication#logout"
+
+  root :to => "home#index"
+
+  get "leader_board" => "home#leader_board"
 
   post "question/new" => "question#create"
 

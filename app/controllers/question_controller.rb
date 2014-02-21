@@ -1,7 +1,7 @@
 class QuestionController < ApplicationController
   before_filter :require_login
   before_filter :require_admin, :only => [:new, :create, :active, :inactive, :edit, :update]
-  before_filter :require_normal_user , :only => [:answered, :unanswered, :show]
+  before_filter :require_normal_user , :only => [:answered, :unanswered]
 
   def new
     @question = Question.new
@@ -22,18 +22,28 @@ class QuestionController < ApplicationController
   end
 
   def expired
+    questions = Question.where("time_to_expire < ? and questions.is_active = 1", DateTime.now)
+
     if @current_user.is_superuser
-      @questions = Question.where("time_to_expire < ? and questions.is_active = 1", DateTime.now).order("choice_id")
-      @answer_hash = Hash[@questions.map{|question| [question.id, question.choice_id]}]
+      @answer_hash = Hash[questions.map{|question| [question.id, question.choice_id]}]
     else
-      @questions = Question.where("time_to_expire < ? and questions.is_active = 1", DateTime.now)
       answers = Answer.find_all_by_user_id(@current_user.id)
       @answer_hash = Hash[answers.map{|answer| [answer.question_id, answer.choice_id]}]
+    end
+
+    @expired_answered_questions = []
+    @expired_missed_questions = []
+    for question in questions
+      if @answer_hash[question.id]
+        @expired_answered_questions.append(question)
+      else
+        @expired_missed_questions.append(question)
+      end
     end
   end
 
   def answered
-    @questions = Question.joins(:answers).where(answers: {user_id: @current_user.id}).where("time_to_expire > ?", DateTime.now.utc)
+    @questions = Question.joins(:answers).where(answers: {user_id: @current_user.id}).where("time_to_expire > ?", DateTime.now)
     answers = Answer.find_all_by_user_id(@current_user.id)
     @answer_hash = Hash[answers.map{|answer| [answer.question_id, answer.choice_id]}]
   end
@@ -41,7 +51,7 @@ class QuestionController < ApplicationController
   def unanswered
     @questions = Question.joins(
         "LEFT OUTER JOIN answers ON answers.question_id = questions.id and answers.user_id = #{@current_user.id}"
-    ).where("time_to_expire > ? and answers.question_id is null and questions.is_active = 1", DateTime.now.utc)
+    ).where("time_to_expire > ? and answers.question_id is null and questions.is_active = 1", DateTime.now)
   end
 
   def answer
@@ -71,7 +81,7 @@ class QuestionController < ApplicationController
 
   def update
     @question = Question.find(params[:id])
-    if @question.update(params[:question])
+    if @question.update_attributes(params[:question])
       redirect_to question_inactive_path
     else
       render 'edit'

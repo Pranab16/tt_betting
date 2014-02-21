@@ -17,7 +17,7 @@
 $(document).ready(function () {
     $('.js-add_choice').click(function(event){
         console.log("ADD CHOICE");
-        var i = $('.choices p').size();
+        var i = $('.choice_card p').size();
         $('<p><input id="question_choices_attributes_' + i + '_name" type="text" ' +
             'size="30" placeholder="Choice" name="question[choices_attributes][' + i + '][name]"></p>').appendTo($('.choice_card'));
         event.preventDefault();
@@ -39,7 +39,7 @@ $(document).ready(function () {
             }
         });
         if($(this).hasClass('js-remove_question')){
-            $(this).closest('.questions').remove();
+            $(this).closest('.question_wrapper').remove();
         }
         else if($(this).hasClass('js-disable_question')) {
             $('input[name='+ question + ']').attr('disabled', 'disabled');
@@ -50,5 +50,24 @@ $(document).ready(function () {
         language: 'en',
         format: 'yyyy-MM-dd hh:mm:ss TZ',
         TimeZone: true
+    });
+
+    $('#expired_answered_questions').hide();
+    $('#expired_missed_questions').hide();
+
+    $(".expired_answered_questions > a").click(function(event){
+        event.preventDefault();
+        $(".expired_answered_questions").addClass('active');
+        $(".expired_missed_questions").removeClass('active');
+        $('#expired_answered_questions').show();
+        $('#expired_missed_questions').hide();
+    });
+
+    $(".expired_missed_questions > a").click(function(event){
+        event.preventDefault();
+        $(".expired_missed_questions").addClass('active');
+        $(".expired_answered_questions").removeClass('active');
+        $('#expired_answered_questions').hide();
+        $('#expired_missed_questions').show();
     });
 });

@@ -1,40 +1,97 @@
 <% content_for :expired_question do %>
     active
 <% end %>
-<h1>Expired Questions</h1>
+<h1>Expired                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             Questions</h1>
 <script>
     var url = "<%= question_answer_path %>";
 </script>
 
-<div class="questions content_wrapper">
-    <% for question in @questions %>
-        <div class="question_wrapper">
-            <%if @current_user.is_superuser %>
-                <% disabled = false %>
-            <% else %>
-                <% disabled = true %>
-            <% end %>
-            <h4 class="question_name">Q <%= question.id %>: <%= question.name %></h4>
-            <p class="question_point">
-                [<%= question.score %> point(s)]
-            </p>
-            <p class="question_time_left">
-                [Expired]
-            </p>
-            <% disabled = true if question.choice_id %>
+<ul class="nav nav-pills expired_tabs">
+    <li class="expired_answered_questions"><%= link_to "Answered Questions", '#' %></li>
+    <li class="expired_missed_questions"><%= link_to "Missed Questions", '#' %></li>
+</ul>
 
-            <div class="choices">
-                <% for choice in question.choices %>
-                    <div class="choice_wrapper">
-                        <% checked = false %>
-                        <% if @answer_hash[question.id] == choice.id %>
-                            <% checked = true %>
+<div class="questions content_wrapper">
+
+
+    <%if @current_user.is_superuser %>
+        <% disabled = false %>
+    <% else %>
+        <% disabled = true %>
+    <% end %>
+
+    <div id="expired_answered_questions">
+        <% for question in @expired_answered_questions %>
+            <div class="question_wrapper clearfix">
+
+                <h4 class="question_name">Q <%= question.id %>: <%= question.name %></h4>
+                <p class="question_point">
+                    [<%= question.score %> point(s)]
+                </p>
+                <p class="question_time_left">
+                    [Expired]
+                </p>
+
+                <% disabled = true if question.choice_id %>
+
+                <div class="choices pull-left">
+                    <% for choice in question.choices %>
+                        <div class="choice_wrapper">
+                            <% checked = false %>
+                            <% if @answer_hash[question.id] == choice.id %>
+                                <% checked = true %>
+                            <% end %>
+                            <%= radio_button_tag question.id, choice.id, checked, disabled: disabled, class: "js-select_choice js-disable_question" %>
+                            <%= choice.name %>
+                        </div>
+                    <% end %>
+                </div>
+
+                <%unless @current_user.is_superuser %>
+                    <span class="correct_answer">
+                        <% for choice in question.choices %>
+                            <% if question.choice_id == choice.id %>
+                                Correct answer: <%= choice.name %>
+                            <% end %>
                         <% end %>
-                        <%= radio_button_tag question.id, choice.id, checked, disabled: disabled, class: "js-select_choice js-disable_question" %>
-                        <%= choice.name %>
-                    </div>
+                    </span>
                 <% end %>
             </div>
-        </div>
-    <% end %>
+        <% end %>
+    </div>
+
+    <div id="expired_missed_questions">
+        <% for question in @expired_missed_questions %>
+            <div class="question_wrapper clearfix">
+                <h4 class="question_name">Q <%= question.id %>: <%= question.name %></h4>
+                <p class="question_point">
+                    [<%= question.score %> point(s)]
+                </p>
+                <p class="question_time_left">
+                    [Expired]
+                </p>
+                <% disabled = true if question.choice_id %>
+
+                <div class="choices pull-left">
+                    <% for choice in question.choices %>
+                        <div class="choice_wrapper">
+                            <%= radio_button_tag question.id, choice.id, false, disabled: disabled, class: "js-select_choice js-disable_question" %>
+                            <%= choice.name %>
+                        </div>
+                    <% end %>
+                </div>
+
+                <%unless @current_user.is_superuser %>
+                    <span class="pull-left correct_answer">
+                        <% for choice in question.choices %>
+                            <% if question.choice_id == choice.id %>
+                                Correct answer: <%= choice.name %>
+                            <% end %>
+                        <% end %>
+                    </span>
+                <% end %>
+            </div>
+        <% end %>
+    </div>
+
 </div>
