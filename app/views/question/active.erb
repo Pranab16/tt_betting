@@ -1,10 +1,9 @@
-<% content_for :answered_question do %>
+<% content_for :active_question do %>
     active
 <% end %>
-<h1>Answered Questions</h1>
-<script>
-    var url = "<%= question_answer_path %>";
-</script>
+
+<h1>Active Questions</h1>
+
 <div class="questions content_wrapper">
     <% for question in @questions %>
         <div class="question_wrapper">
@@ -22,11 +21,7 @@
             <div class="choices">
                 <% for choice in question.choices %>
                     <div class="choice_wrapper">
-                        <% checked = false %>
-                        <% if @answer_hash[question.id] == choice.id %>
-                            <% checked = true %>
-                        <% end %>
-                        <%= radio_button_tag question.id, choice.id, checked, class: "js-select_choice" %>
+                        <%= radio_button_tag question.id, choice.id, false, disabled: true, class: "js-select_choice" %>
                         <%= choice.name %>
                     </div>
                 <% end %>

@@ -1,14 +1,14 @@
-<% content_for :answered_question do %>
+<% content_for :inactive_question do %>
     active
 <% end %>
-<h1>Answered Questions</h1>
-<script>
-    var url = "<%= question_answer_path %>";
-</script>
+
+<h1>Inactive Questions</h1>
+
 <div class="questions content_wrapper">
     <% for question in @questions %>
         <div class="question_wrapper">
             <h4 class="question_name">Q <%= question.id %>: <%= question.name %></h4>
+            <%= link_to 'Edit', edit_question_path(question) %>
             <p class="question_point">
                 [<%= question.score %> point(s)]
             </p>
@@ -22,11 +22,7 @@
             <div class="choices">
                 <% for choice in question.choices %>
                     <div class="choice_wrapper">
-                        <% checked = false %>
-                        <% if @answer_hash[question.id] == choice.id %>
-                            <% checked = true %>
-                        <% end %>
-                        <%= radio_button_tag question.id, choice.id, checked, class: "js-select_choice" %>
+                        <%= radio_button_tag question.id, choice.id, false, disabled: true, class: "js-select_choice" %>
                         <%= choice.name %>
                     </div>
                 <% end %>

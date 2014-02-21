@@ -13,10 +13,10 @@ class AuthenticationController < ApplicationController
     user = User.find_by_username(username)
     if user && user.password == password
       session[:user_id] = user.id
-      flash[:notice] = 'Successfully logged in.'
+      flash[:success] = 'Successfully logged in.'
       redirect_to :root
     else
-      flash[:error] = 'Please enter correct username and password.'
+      flash.now[:error] = 'Please enter correct username and password.'
       render :action => "login"
     end
   end
@@ -24,7 +24,7 @@ class AuthenticationController < ApplicationController
   def logout
     #session[:user_id] = nil
     reset_session
-    flash[:notice] = 'Successfully logged out.'
+    flash[:success] = 'Successfully logged out.'
     redirect_to login_path
   end
 
@@ -41,6 +41,7 @@ class AuthenticationController < ApplicationController
       flash[:notice] = 'Successfully logged in.'
       redirect_to :root
     else
+      flash.now[:error] = 'Please provide complete info.'
       render :action => "signup"
     end
   end

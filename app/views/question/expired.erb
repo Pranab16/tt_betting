@@ -1,4 +1,7 @@
-<h1>Questions</h1>
+<% content_for :expired_question do %>
+    active
+<% end %>
+<h1>Expired Questions</h1>
 <script>
     var url = "<%= question_answer_path %>";
 </script>
@@ -12,8 +15,12 @@
                 <% disabled = true %>
             <% end %>
             <h4 class="question_name">Q <%= question.id %>: <%= question.name %></h4>
-            [<%= question.score %> point(s)]
-            [Expired]
+            <p class="question_point">
+                [<%= question.score %> point(s)]
+            </p>
+            <p class="question_time_left">
+                [Expired]
+            </p>
             <% disabled = true if question.choice_id %>
 
             <div class="choices">

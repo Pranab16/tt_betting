@@ -1,4 +1,17 @@
-<h1>Home Page</h1>
-<div class="content_wrapper">
-    Score : <%= @score %>
-</div>
+<% content_for :home do %>
+    active
+<% end %>
+
+
+<% if @current_user.is_superuser %>
+
+<% else %>
+    <div class="score_rank">
+        <p class="score">
+            Score : <%= @score %>
+        </p>
+        <p class="rank">
+            Rank : <%= @rank %>
+        </p>
+    </div>
+<% end %>

@@ -1,17 +1,20 @@
-<h2>Sign Up</h2>
-<div class="content_wrapper">
-    <%= form_for @user, :url => signup_path(@user)  do |f| %>
-        <p>
-            Username: <%= f.text_field :username %>
-        </p>
-        <p>
-            Email: <%= f.text_field :email %>
-        </p>
-        <p>
-            Password: <%= f.password_field :password %>
-        </p>
-        <p>
-            <%= f.submit 'Sign Up' %>
-        </p>
-    <% end %>
+<div class="login_page_wrapper">
+    <h2>Sign Up</h2>
+    <div class="login_card">
+        <%= form_for @user, :url => signup_path(@user)  do |f| %>
+            <p>
+                <%= f.text_field :username, :placeholder => "Username" %>
+            </p>
+            <p>
+                <%= f.text_field :email, :placeholder => "Email" %>
+            </p>
+            <p>
+                <%= f.password_field :password, :placeholder => "Password" %>
+            </p>
+            <p>
+                <%= f.submit 'Sign Up', :class => 'btn btn-info' %>
+                <%= link_to "Return to login", login_path %>
+            </p>
+        <% end %>
+    </div>
 </div>

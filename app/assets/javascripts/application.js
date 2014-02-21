@@ -18,8 +18,8 @@ $(document).ready(function () {
     $('.js-add_choice').click(function(event){
         console.log("ADD CHOICE");
         var i = $('.choices p').size();
-        $('<p>Choice : <input id="question_choices_attributes_' + i + '_name" type="text" ' +
-            'size="30" name="question[choices_attributes][' + i + '][name]"></p>').appendTo($('.choices'));
+        $('<p><input id="question_choices_attributes_' + i + '_name" type="text" ' +
+            'size="30" placeholder="Choice" name="question[choices_attributes][' + i + '][name]"></p>').appendTo($('.choice_card'));
         event.preventDefault();
 
     });
@@ -44,5 +44,11 @@ $(document).ready(function () {
         else if($(this).hasClass('js-disable_question')) {
             $('input[name='+ question + ']').attr('disabled', 'disabled');
         }
+    });
+
+    $('#js-date_time_picker').datetimepicker({
+        language: 'en',
+        format: 'yyyy-MM-dd hh:mm:ss TZ',
+        TimeZone: true
     });
 });

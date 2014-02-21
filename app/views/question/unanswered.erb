@@ -1,4 +1,7 @@
-<h1>Questions</h1>
+<% content_for :unanswered_question do %>
+    active
+<% end %>
+<h1>Unanswered Questions</h1>
 <script>
     var url = "<%= question_answer_path %>";
 </script>
@@ -6,9 +9,16 @@
     <% for question in @questions %>
         <div class="question_wrapper">
             <h4 class="question_name">Q <%= question.id %>: <%= question.name %></h4>
+
+            <p class="question_point">
             [<%= question.score %> point(s)]
+            </p>
+
             <% diff = question.time_to_expire - DateTime.now.utc %>
+
+            <p class="question_time_left">
             [Time left: <%= '%d day(s) %d hours %02d minutes' % [ diff / (24*3600), (diff % (24*3600)) / 3600, (diff / 60) % 60] %>]
+            </p>
 
             <div class="choices">
                 <% for choice in question.choices %>

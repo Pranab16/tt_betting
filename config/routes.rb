@@ -8,10 +8,10 @@ Demo::Application.routes.draw do
   root :to => "home#index"
   get "logout" => "authentication#logout"
 
-  get "question/new" => "question#new"
   post "question/new" => "question#create"
 
-  get "question/current" => "question#current"
+  get "question/active" => "question#active"
+  get "question/inactive" => "question#inactive"
   get "question/expired" => "question#expired"
 
   get "question/answered" => "question#answered"
@@ -26,7 +26,7 @@ Demo::Application.routes.draw do
   #
   #get "welcome/test"
 
-  #resources :questions
+  resources :question
 
   #root to: "welcome#index"
 
