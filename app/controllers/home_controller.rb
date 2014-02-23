@@ -37,7 +37,7 @@ class HomeController < ApplicationController
   def leader_board
     @users = User.where(is_superuser: false)
 
-    @questions = Question.all
+    @questions = Question.where(is_active: true)
 
     users_question_score = Question.joins(
         "INNER JOIN answers ON answers.choice_id = questions.choice_id"

@@ -14,7 +14,7 @@
             [<%= question.score %> point(s)]
             </p>
 
-            <% diff = question.time_to_expire - DateTime.now.utc %>
+            <% diff = question.time_to_expire - DateTime.now %>
 
             <p class="question_time_left">
             [Time left: <%= '%d day(s) %d hours %02d minutes' % [ diff / (24*3600), (diff % (24*3600)) / 3600, (diff / 60) % 60] %>]

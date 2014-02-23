@@ -6,8 +6,8 @@ gem 'rails', '3.2.16'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'mysql2'
-gem "rspec-rails", "~> 2.8"
-
+gem "rspec"
+gem "factory_girl_rails", "~> 4.0"
 
 # Gems used only for assets and not required
 # in production environments by default.

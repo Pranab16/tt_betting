@@ -69,6 +69,13 @@ class QuestionController < ApplicationController
 
   def show
     @question = Question.find(params[:id])
+    unless @current_user.is_superuser
+      unless @question.is_active
+        flash[:error] = "Question #{params[:id]} does not exist"
+        redirect_to :root
+      end
+      @answer = Answer.where(question_id: params[:id], user_id: @current_user.id).first
+    end
   end
 
   def edit

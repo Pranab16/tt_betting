@@ -1,3 +1,7 @@
+<script>
+    var url = "<%= question_answer_path %>";
+</script>
+
 <div class="questions content_wrapper">
     <div class="question_wrapper">
         <h4 class="question_name">Q <%= @question.id %>: <%= @question.name %></h4>
@@ -5,19 +9,49 @@
             [<%= @question.score %> point(s)]
         </p>
 
-        <% diff = @question.time_to_expire - DateTime.now.utc %>
+        <% diff = @question.time_to_expire - DateTime.now %>
 
         <p class="question_time_left">
+            <% if diff > 0 %>
             [Time left: <%= '%d day(s) %d hours %02d minutes' % [ diff / (24*3600), (diff % (24*3600)) / 3600, (diff / 60) % 60] %>]
+            <% else %>
+            [Expired]
+            <% end %>
         </p>
 
-        <div class="choices">
+        <% if @current_user.is_superuser %>
+            <% add_class = "js-disable_question" %>
+            <% if @question.choice_id or not @question.is_active or diff > 0 %>
+                <% disabled = true %>
+            <% else %>
+                <% disabled = false %>
+            <% end %>
+        <% else %>
+            <% disabled = true %>
+        <% end %>
+
+        <div class="choices pull-left">
             <% for choice in @question.choices %>
                 <div class="choice_wrapper">
-                    <%= radio_button_tag @question.id, choice.id, false, disabled: true, class: "js-select_choice" %>
+                    <% checked = false %>
+                    <% if (@current_user.is_superuser and @question.choice_id == choice.id) or
+                            (not @current_user.is_superuser and @answer and @answer.choice_id == choice.id) %>
+                        <% checked = true %>
+                    <% end %>
+                    <%= radio_button_tag @question.id, choice.id, checked, disabled: disabled, class: "js-select_choice #{add_class}" %>
                     <%= choice.name %>
                 </div>
             <% end %>
         </div>
+
+        <%unless @current_user.is_superuser %>
+            <span class="correct_answer">
+                <% for choice in @question.choices %>
+                    <% if @question.choice_id == choice.id %>
+                        Correct answer: <%= choice.name %>
+                    <% end %>
+                <% end %>
+            </span>
+        <% end %>
     </div>
 </div>
