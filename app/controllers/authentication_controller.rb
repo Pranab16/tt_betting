@@ -41,7 +41,7 @@ class AuthenticationController < ApplicationController
       flash[:notice] = 'Successfully logged in.'
       redirect_to :root
     else
-      flash.now[:error] = 'Please provide complete info.'
+      flash.now[:error] = 'Please provide complete and correct info.'
       render :action => "signup"
     end
   end
